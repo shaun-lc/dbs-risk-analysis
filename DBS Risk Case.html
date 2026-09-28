@@ -1,0 +1,989 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>DBS Risk Case</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+  :root {
+    --paper: #EAE6DA;
+    --paper-2: #E1DCC9;
+    --paper-3: #D5CFB9;
+    --ink: #12100E;
+    --ink-2: #2E2A24;
+    --muted: #6C6455;
+    --rule: #BAB29C;
+    --rule-strong: #8A8270;
+    --accent: #7A1F2B;
+    --accent-2: #A2452F;
+    --critical: #932A22;
+    --high: #B26A2E;
+    --medium: #9A8642;
+    --low: #5A7148;
+    --tile: #EEE9DB;
+    --tile-strong: #E4DEC9;
+
+    --serif: 'Instrument Serif', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace;
+
+    color-scheme: light dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #14120F;
+      --paper-2: #1B1815;
+      --paper-3: #23201B;
+      --ink: #EEE7D6;
+      --ink-2: #B8B0A0;
+      --muted: #8A8271;
+      --rule: #34302A;
+      --rule-strong: #524C40;
+      --accent: #D08872;
+      --accent-2: #C46A50;
+      --critical: #E27A5A;
+      --high: #DFA062;
+      --medium: #C6B067;
+      --low: #92AD79;
+      --tile: #1D1B17;
+      --tile-strong: #26221C;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #14120F;
+    --paper-2: #1B1815;
+    --paper-3: #23201B;
+    --ink: #EEE7D6;
+    --ink-2: #B8B0A0;
+    --muted: #8A8271;
+    --rule: #34302A;
+    --rule-strong: #524C40;
+    --accent: #D08872;
+    --accent-2: #C46A50;
+    --critical: #E27A5A;
+    --high: #DFA062;
+    --medium: #C6B067;
+    --low: #92AD79;
+    --tile: #1D1B17;
+    --tile-strong: #26221C;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    padding-block: 32px 96px;
+    padding-inline: 20px;
+    line-height: 1.55;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  /* Header bar */
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .topbar .who { color: var(--ink); font-weight: 500; }
+  .topbar .dot { color: var(--accent); }
+
+  /* Eyebrow */
+  .eyebrow {
+    margin-top: 44px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* Hero */
+  h1.title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(42px, 8vw, 68px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    margin: 14px 0 20px;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  h1.title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .deck {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(20px, 3vw, 24px);
+    line-height: 1.4;
+    color: var(--ink-2);
+    max-width: 620px;
+    text-wrap: balance;
+    margin-bottom: 40px;
+  }
+
+  /* Facts strip */
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding-block: 18px;
+  }
+  .fact {
+    padding: 0 16px;
+    border-left: 1px solid var(--rule);
+  }
+  .fact:first-child { border-left: 0; padding-left: 0; }
+  .fact .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .fact .val {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  /* Section */
+  section {
+    margin-top: 64px;
+  }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(28px, 4vw, 34px);
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+  h2 .num {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+    margin: 24px 0 8px;
+  }
+  p {
+    margin: 12px 0;
+    color: var(--ink-2);
+    max-width: 65ch;
+  }
+  p strong { color: var(--ink); font-weight: 600; }
+
+  /* Pull quote */
+  .pull {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(22px, 3.2vw, 28px);
+    line-height: 1.3;
+    color: var(--ink);
+    border-left: 2px solid var(--accent);
+    padding-left: 24px;
+    margin: 32px 0;
+    text-wrap: balance;
+  }
+
+  /* Framework grid */
+  .frameworks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+    padding-block: 24px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .fw .code {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .fw .name {
+    font-family: var(--serif);
+    font-size: 22px;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .fw p {
+    font-size: 13px;
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* Risks table */
+  .table-wrap {
+    margin-top: 24px;
+    overflow-x: auto;
+    border-top: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--rule);
+  }
+  table.risks {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.risks th, table.risks td {
+    text-align: left;
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: baseline;
+  }
+  table.risks th {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  table.risks td.num {
+    font-family: var(--mono);
+    color: var(--muted);
+    font-size: 12px;
+    width: 36px;
+  }
+  table.risks td.risk {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  table.risks td.cat {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .lvl {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    display: inline-block;
+    border: 1px solid currentColor;
+  }
+  .lvl.critical { color: var(--critical); }
+  .lvl.high { color: var(--high); }
+  .lvl.medium { color: var(--medium); }
+  .lvl.low { color: var(--low); }
+
+  /* Dashboard: exposure tiles */
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 24px;
+  }
+  .tile {
+    background: var(--tile);
+    padding: 20px 18px;
+  }
+  .tile .k {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .tile .v {
+    font-family: var(--serif);
+    font-size: 34px;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .tile .sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 6px;
+    font-family: var(--mono);
+  }
+  .tile .v.accent { color: var(--accent); }
+
+  /* Heat map */
+  .heatmap-wrap { margin-top: 32px; }
+  .hm-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 12px;
+  }
+  .hm-title h3 { margin: 0; }
+  .hm-title .caption { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  .hm-frame {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    grid-template-rows: 1fr 24px;
+    gap: 8px;
+    align-items: stretch;
+  }
+  .hm-yaxis {
+    grid-column: 1; grid-row: 1;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hm-grid {
+    grid-column: 2; grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, minmax(56px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .cell {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  /* Row 1 = highest impact. Col 5 = highest likelihood.
+     Color by max(row, col) diagonal-ish severity. */
+  /* Row 1 */
+  .cell.r1c1 { background: color-mix(in oklab, var(--low) 22%, var(--tile)); }
+  .cell.r1c2 { background: color-mix(in oklab, var(--medium) 22%, var(--tile)); }
+  .cell.r1c3 { background: color-mix(in oklab, var(--medium) 32%, var(--tile)); }
+  .cell.r1c4 { background: color-mix(in oklab, var(--high) 40%, var(--tile)); }
+  .cell.r1c5 { background: color-mix(in oklab, var(--critical) 55%, var(--tile)); }
+  /* Row 2 */
+  .cell.r2c1 { background: color-mix(in oklab, var(--low) 22%, var(--tile)); }
+  .cell.r2c2 { background: color-mix(in oklab, var(--medium) 22%, var(--tile)); }
+  .cell.r2c3 { background: color-mix(in oklab, var(--medium) 35%, var(--tile)); }
+  .cell.r2c4 { background: color-mix(in oklab, var(--high) 45%, var(--tile)); }
+  .cell.r2c5 { background: color-mix(in oklab, var(--critical) 50%, var(--tile)); }
+  /* Row 3 */
+  .cell.r3c1 { background: color-mix(in oklab, var(--low) 30%, var(--tile)); }
+  .cell.r3c2 { background: color-mix(in oklab, var(--medium) 28%, var(--tile)); }
+  .cell.r3c3 { background: color-mix(in oklab, var(--medium) 40%, var(--tile)); }
+  .cell.r3c4 { background: color-mix(in oklab, var(--high) 40%, var(--tile)); }
+  .cell.r3c5 { background: color-mix(in oklab, var(--high) 50%, var(--tile)); }
+  /* Row 4 */
+  .cell.r4c1 { background: color-mix(in oklab, var(--low) 40%, var(--tile)); }
+  .cell.r4c2 { background: color-mix(in oklab, var(--low) 32%, var(--tile)); }
+  .cell.r4c3 { background: color-mix(in oklab, var(--medium) 30%, var(--tile)); }
+  .cell.r4c4 { background: color-mix(in oklab, var(--medium) 42%, var(--tile)); }
+  .cell.r4c5 { background: color-mix(in oklab, var(--high) 42%, var(--tile)); }
+  /* Row 5 */
+  .cell.r5c1 { background: color-mix(in oklab, var(--low) 45%, var(--tile)); }
+  .cell.r5c2 { background: color-mix(in oklab, var(--low) 40%, var(--tile)); }
+  .cell.r5c3 { background: color-mix(in oklab, var(--low) 30%, var(--tile)); }
+  .cell.r5c4 { background: color-mix(in oklab, var(--medium) 30%, var(--tile)); }
+  .cell.r5c5 { background: color-mix(in oklab, var(--medium) 40%, var(--tile)); }
+
+  .chip {
+    display: inline-block;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 6px;
+    border: 1px solid var(--rule-strong);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  }
+  .chip .rid { color: var(--accent); font-weight: 500; margin-right: 4px; }
+
+  .hm-xaxis {
+    grid-column: 2; grid-row: 2;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .hm-legend {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .hm-legend .sw {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 6px;
+    vertical-align: -2px;
+    border: 1px solid var(--rule-strong);
+  }
+  .sw.critical { background: color-mix(in oklab, var(--critical) 55%, var(--tile)); }
+  .sw.high { background: color-mix(in oklab, var(--high) 45%, var(--tile)); }
+  .sw.medium { background: color-mix(in oklab, var(--medium) 35%, var(--tile)); }
+  .sw.low { background: color-mix(in oklab, var(--low) 30%, var(--tile)); }
+
+  /* KRI cards */
+  .kri-row {
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .kri {
+    background: var(--tile);
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .kri .name {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .kri .val {
+    font-family: var(--serif);
+    font-size: 32px;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .kri .thresh {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .kri .status {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .kri .status.breach { color: var(--critical); }
+  .kri .status.below { color: var(--high); }
+  .kri .status.ok { color: var(--low); }
+  .kri .status::before {
+    content: "●";
+    margin-right: 6px;
+  }
+
+  /* Trend chart */
+  .chart-wrap {
+    margin-top: 32px;
+    border-top: 1px solid var(--rule);
+    padding-top: 20px;
+  }
+  .chart-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .chart-legend {
+    display: flex;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+  .chart-legend .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: 0;
+  }
+  .chart-legend .cyber { background: var(--accent); }
+  .chart-legend .uptime { background: var(--ink-2); }
+  .chart-legend .npl { background: var(--muted); }
+
+  svg.trend {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 8px;
+  }
+  svg.trend .grid line { stroke: var(--rule); stroke-width: 0.5; }
+  svg.trend .axis text { fill: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; }
+  svg.trend .series-cyber { fill: none; stroke: var(--accent); stroke-width: 2; }
+  svg.trend .series-uptime { fill: none; stroke: var(--ink-2); stroke-width: 1.5; }
+  svg.trend .series-npl { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 3; }
+  svg.trend .threshold { stroke: var(--critical); stroke-width: 1; stroke-dasharray: 2 3; opacity: 0.6; }
+  svg.trend .marker { fill: var(--accent); }
+  svg.trend .marker-outline { fill: var(--paper); stroke: var(--accent); stroke-width: 1.5; }
+
+  /* Mitigation grid */
+  .mit-grid {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .mit {
+    background: var(--tile);
+    padding: 22px 20px;
+  }
+  .mit .cat {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .mit ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .mit li {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.45;
+    padding-left: 14px;
+    position: relative;
+  }
+  .mit li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .mit li strong { color: var(--ink); font-weight: 600; }
+
+  /* Skills strip */
+  .skills {
+    margin-top: 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px 32px;
+  }
+  .skill h3 { margin: 0 0 6px; }
+  .skill p { margin: 0; font-size: 13px; }
+
+  /* Footer note */
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  footer a { color: var(--accent); text-decoration: none; border-bottom: 1px solid currentColor; }
+
+  /* Small screens */
+  @media (max-width: 520px) {
+    .fact { padding: 8px 0; border-left: 0; border-top: 1px solid var(--rule); }
+    .fact:first-child { border-top: 0; padding-top: 0; }
+    .facts { display: block; }
+    h1.title { font-size: 44px; }
+    .chip { font-size: 9px; padding: 2px 4px; }
+  }
+
+  ::selection { background: var(--accent); color: var(--paper); }
+</style>
+
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="who">Shaun Lee Cherng <span class="dot">·</span> Portfolio</span>
+    <span>Case Study 01</span>
+  </div>
+
+  <div class="eyebrow">Enterprise Risk · Banking · Singapore</div>
+  <h1 class="title">Mapping the risk of Asia's most <em>digital</em> bank.</h1>
+  <p class="deck">A framework-driven risk analysis of DBS Bank Ltd — eight material risks, four categories, and a consulting-style dashboard built from public disclosures.</p>
+
+  <div class="facts">
+    <div class="fact"><div class="label">Institution</div><div class="val">DBS Bank Ltd</div></div>
+    <div class="fact"><div class="label">Frameworks</div><div class="val">ISO 31000 · COSO ERM</div></div>
+    <div class="fact"><div class="label">Focus Risk</div><div class="val">Cybersecurity &amp; Data Privacy</div></div>
+    <div class="fact"><div class="label">Deliverable</div><div class="val">21-page eBook + Dashboard</div></div>
+    <div class="fact"><div class="label">Period</div><div class="val">2023 – Q1 2025</div></div>
+  </div>
+
+  <section>
+    <h2><span class="num">01 — The Brief</span>Choosing a bank that sits at the intersection of every risk vector that matters now.</h2>
+    <p>The assignment was open-ended: identify a publicly listed financial institution, systematically map its material enterprise risks, and present the analysis as a professional risk dashboard grounded in recognised frameworks. I chose <strong>DBS Bank Ltd</strong> — Southeast Asia's largest bank by assets (SGD 680B+ in 2023), operating across 19 markets, and one of the region's most aggressive digital transformers.</p>
+    <p>My focus risk was <strong>cybersecurity and data privacy</strong>. The rationale was material and current: DBS suffered a documented breach in April 2025 affecting approximately 8,200 customers through a third-party vendor (<em>The Straits Times</em>, 2025). At the same time, 51% of financial services executives globally now rank cybersecurity as their top compliance priority (PwC, 2025). The topic was traceable through public disclosures, quantifiable, and directly relevant to how a modern bank actually loses value.</p>
+    <p class="pull">Sound risk management is ultimately about making deliberate, boundary-aware trade-offs, not pursuing unconstrained growth.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02 — Approach</span>Three frameworks, applied deliberately rather than decoratively.</h2>
+    <p>Rather than default to a single framework, I built the analysis through a stacked approach — each framework doing a specific job in the pipeline from identification to monitoring.</p>
+    <div class="frameworks">
+      <div class="fw">
+        <div class="code">Structure</div>
+        <div class="name">ISO 31000:2018</div>
+        <p>Set the identification, assessment, and treatment sequence. Anchored the risk register and heat map to a defensible international standard.</p>
+      </div>
+      <div class="fw">
+        <div class="code">Strategy</div>
+        <div class="name">COSO ERM (2017)</div>
+        <p>Linked risk categories to strategic value creation. Grounded the KRI dashboard and escalation matrix in enterprise governance logic.</p>
+      </div>
+      <div class="fw">
+        <div class="code">Thresholds</div>
+        <div class="name">DBS Risk Appetite</div>
+        <p>Used DBS's own published Risk Appetite Statement to derive KRI thresholds and tie monitoring back to the bank's declared tolerance.</p>
+      </div>
+    </div>
+    <p>Sources triangulated across the DBS 2023 Annual Report, DBS Sustainability Report 2023, Monetary Authority of Singapore (MAS) Technology Risk Management Guidelines, MAS Notice 655 on Cyber Hygiene, NIST SP 800-207 (Zero Trust Architecture), TCFD (2021), and the PwC Global Compliance Survey 2025.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">03 — Risks Identified</span>Eight material risks across four categories, ranked by likelihood × impact.</h2>
+    <p>Each risk was assessed on a 1–5 likelihood scale and a 1–5 impact scale, giving a composite score. The weighted portfolio exposure came out to <strong>11.9 / 25</strong> — approximately 56% of the maximum possible score. Cybersecurity was the only risk classified critical.</p>
+    <div class="table-wrap">
+      <table class="risks">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Risk</th>
+            <th>Category</th>
+            <th>L × I</th>
+            <th>Level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">R1</td><td class="risk">Cybersecurity &amp; Data Privacy</td><td class="cat">Emerging</td><td class="num">4 × 5</td><td><span class="lvl critical">Critical</span></td></tr>
+          <tr><td class="num">R2</td><td class="risk">IT Systems &amp; Outage</td><td class="cat">Operational</td><td class="num">4 × 4</td><td><span class="lvl high">High</span></td></tr>
+          <tr><td class="num">R3</td><td class="risk">Credit &amp; Loan Default</td><td class="cat">Financial</td><td class="num">3 × 4</td><td><span class="lvl high">High</span></td></tr>
+          <tr><td class="num">R4</td><td class="risk">Digital Competition</td><td class="cat">Strategic</td><td class="num">4 × 3</td><td><span class="lvl high">High</span></td></tr>
+          <tr><td class="num">R5</td><td class="risk">Market &amp; Interest Rate</td><td class="cat">Financial</td><td class="num">3 × 4</td><td><span class="lvl high">High</span></td></tr>
+          <tr><td class="num">R6</td><td class="risk">Third-Party Vendor</td><td class="cat">Operational</td><td class="num">3 × 3</td><td><span class="lvl medium">Medium</span></td></tr>
+          <tr><td class="num">R7</td><td class="risk">Geopolitical</td><td class="cat">Strategic</td><td class="num">4 × 2</td><td><span class="lvl medium">Medium</span></td></tr>
+          <tr><td class="num">R8</td><td class="risk">Climate &amp; ESG Transition</td><td class="cat">Emerging</td><td class="num">2 × 3</td><td><span class="lvl low">Low</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">04 — Risk Dashboard</span>The analysis, rebuilt as an executive scan surface.</h2>
+    <p>The dashboard was the assignment's core deliverable: an at-a-glance view of enterprise exposure that would let a board-level reader locate the two or three risks that actually deserved attention. The tiles below reproduce the top-line summary; the heat map and KRI panels reproduce the two visuals a risk committee would look at first.</p>
+
+    <div class="tiles">
+      <div class="tile">
+        <div class="k">Overall Exposure</div>
+        <div class="v accent">11.9<span style="font-size:16px;color:var(--muted);"> / 25</span></div>
+        <div class="sub">Moderate–High</div>
+      </div>
+      <div class="tile">
+        <div class="k">Risks Identified</div>
+        <div class="v">8</div>
+        <div class="sub">4 categories</div>
+      </div>
+      <div class="tile">
+        <div class="k">High Priority</div>
+        <div class="v">5</div>
+        <div class="sub">1 critical</div>
+      </div>
+      <div class="tile">
+        <div class="k">Top Risk</div>
+        <div class="v" style="font-size:22px; padding-top:6px;">Cybersecurity</div>
+        <div class="sub">R1 · Emerging</div>
+      </div>
+    </div>
+
+    <div class="heatmap-wrap">
+      <div class="hm-title">
+        <h3>Heat Map — Likelihood × Impact</h3>
+        <span class="caption">R1–R8 plotted</span>
+      </div>
+      <div class="hm-frame">
+        <div class="hm-yaxis">Impact →</div>
+        <div class="hm-grid">
+          <!-- Row 1 (Impact 5, top) -->
+          <div class="cell r1c1"></div>
+          <div class="cell r1c2"></div>
+          <div class="cell r1c3"></div>
+          <div class="cell r1c4"><span class="chip"><span class="rid">R1</span>Cyber</span></div>
+          <div class="cell r1c5"></div>
+          <!-- Row 2 (Impact 4) -->
+          <div class="cell r2c1"></div>
+          <div class="cell r2c2"></div>
+          <div class="cell r2c3"><span class="chip"><span class="rid">R3</span>Credit</span><span class="chip"><span class="rid">R5</span>Market</span></div>
+          <div class="cell r2c4"><span class="chip"><span class="rid">R2</span>IT Outage</span></div>
+          <div class="cell r2c5"></div>
+          <!-- Row 3 (Impact 3) -->
+          <div class="cell r3c1"></div>
+          <div class="cell r3c2"><span class="chip"><span class="rid">R8</span>Climate</span></div>
+          <div class="cell r3c3"><span class="chip"><span class="rid">R6</span>Vendor</span></div>
+          <div class="cell r3c4"><span class="chip"><span class="rid">R4</span>Digital</span></div>
+          <div class="cell r3c5"></div>
+          <!-- Row 4 (Impact 2) -->
+          <div class="cell r4c1"></div>
+          <div class="cell r4c2"></div>
+          <div class="cell r4c3"></div>
+          <div class="cell r4c4"><span class="chip"><span class="rid">R7</span>Geopol</span></div>
+          <div class="cell r4c5"></div>
+          <!-- Row 5 (Impact 1) -->
+          <div class="cell r5c1"></div>
+          <div class="cell r5c2"></div>
+          <div class="cell r5c3"></div>
+          <div class="cell r5c4"></div>
+          <div class="cell r5c5"></div>
+        </div>
+        <div class="hm-xaxis">Likelihood →</div>
+      </div>
+      <div class="hm-legend">
+        <span><span class="sw critical"></span>Critical</span>
+        <span><span class="sw high"></span>High</span>
+        <span><span class="sw medium"></span>Medium</span>
+        <span><span class="sw low"></span>Low</span>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">
+        <h3>Key Risk Indicators — Q1 2025 Snapshot</h3>
+        <span class="caption" style="font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;">2 KRIs breached</span>
+      </div>
+      <div class="kri-row">
+        <div class="kri">
+          <div class="name">Cyber Incidents / Qtr</div>
+          <div class="val">47</div>
+          <div class="thresh">Threshold: 30</div>
+          <div class="status breach">Above threshold</div>
+        </div>
+        <div class="kri">
+          <div class="name">System Uptime</div>
+          <div class="val">99.2%</div>
+          <div class="thresh">Target: 99.9%</div>
+          <div class="status below">Below target</div>
+        </div>
+        <div class="kri">
+          <div class="name">NPL Ratio</div>
+          <div class="val">1.2%</div>
+          <div class="thresh">Threshold: 2.0%</div>
+          <div class="status ok">Within limit</div>
+        </div>
+        <div class="kri">
+          <div class="name">Vendor Concentration</div>
+          <div class="val">68%</div>
+          <div class="thresh">Threshold: 60%</div>
+          <div class="status breach">Above threshold</div>
+        </div>
+        <div class="kri">
+          <div class="name">Climate Loan %</div>
+          <div class="val">3.2%</div>
+          <div class="thresh">Threshold: 5.0%</div>
+          <div class="status ok">Within limit</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <div class="chart-title">
+        <h3>KRI Trend — Cyber Incidents rising 68% since Q1 2023</h3>
+        <div class="chart-legend">
+          <span><span class="dot cyber"></span>Cyber Incidents</span>
+          <span><span class="dot uptime"></span>System Uptime %</span>
+          <span><span class="dot npl"></span>NPL Ratio %</span>
+        </div>
+      </div>
+      <svg class="trend" viewBox="0 0 720 260" role="img" aria-label="Trend chart of cyber incidents, system uptime and NPL ratio from Q1 2023 to Q4 2024">
+        <!-- Grid -->
+        <g class="grid">
+          <line x1="60" y1="30"  x2="700" y2="30"/>
+          <line x1="60" y1="80"  x2="700" y2="80"/>
+          <line x1="60" y1="130" x2="700" y2="130"/>
+          <line x1="60" y1="180" x2="700" y2="180"/>
+          <line x1="60" y1="230" x2="700" y2="230"/>
+        </g>
+        <!-- Y-axis labels (cyber incidents, left) -->
+        <g class="axis">
+          <text x="52" y="34" text-anchor="end">60</text>
+          <text x="52" y="84" text-anchor="end">45</text>
+          <text x="52" y="134" text-anchor="end">30</text>
+          <text x="52" y="184" text-anchor="end">15</text>
+          <text x="52" y="234" text-anchor="end">0</text>
+        </g>
+        <!-- Threshold line at 30 incidents -->
+        <line class="threshold" x1="60" y1="130" x2="700" y2="130"/>
+        <text x="704" y="128" class="axis" style="fill:var(--critical);font-family:var(--mono);font-size:9px;">THRESHOLD 30</text>
+
+        <!-- Cyber Incidents series: 28, 32, 41, 38, 44, 47, 51, 47 -->
+        <!-- Y: 230 - (val/60)*200. X: 60, 152, 244, 336, 428, 520, 612, 700 -->
+        <path class="series-cyber" d="M 60,137 L 151,124 L 243,94 L 335,104 L 427,84 L 519,74 L 611,60 L 700,74"/>
+
+        <!-- System Uptime series: 99.6, 99.4, 99.05, 99.55, 99.65, 99.4, 99.15, 99.25
+             mapped 98.8..100 -> 230..30 (invert). Range = 1.2, so y = 230 - ((v-98.8)/1.2)*200 -->
+        <path class="series-uptime" d="M 60,97 L 151,130 L 243,188 L 335,105 L 427,88 L 519,130 L 611,171 L 700,155"/>
+
+        <!-- NPL series: 0.85, 0.95, 1.05, 1.1, 1.1, 1.05, 1.0, 0.95
+             mapped 0.5..1.5 -> 230..30. y = 230 - ((v-0.5)/1.0)*200 -->
+        <path class="series-npl" d="M 60,160 L 151,140 L 243,120 L 335,110 L 427,110 L 519,120 L 611,130 L 700,140"/>
+
+        <!-- End markers -->
+        <circle class="marker" cx="700" cy="74" r="4"/>
+        <circle class="marker-outline" cx="611" cy="60" r="3"/>
+
+        <!-- X-axis labels -->
+        <g class="axis">
+          <text x="60"  y="252" text-anchor="middle">Q1 '23</text>
+          <text x="151" y="252" text-anchor="middle">Q2</text>
+          <text x="243" y="252" text-anchor="middle">Q3</text>
+          <text x="335" y="252" text-anchor="middle">Q4</text>
+          <text x="427" y="252" text-anchor="middle">Q1 '24</text>
+          <text x="519" y="252" text-anchor="middle">Q2</text>
+          <text x="611" y="252" text-anchor="middle">Q3</text>
+          <text x="700" y="252" text-anchor="middle">Q4</text>
+        </g>
+      </svg>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px;">Cyber incident frequency breached the 30-per-quarter threshold consistently from Q2 2024 onward. Directional trend estimated from MAS cybersecurity disclosures and PwC (2025); precise internal DBS metrics are not publicly reported.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">05 — Mitigation</span>Recommendations tied to real regulatory anchors, not generic best practice.</h2>
+    <p>Each recommendation was linked back to a specific standard so it could survive a governance review — MAS TRM, ISO 27001, NIST SP 800-207, TCFD. A representative selection:</p>
+    <div class="mit-grid">
+      <div class="mit">
+        <div class="cat">Emerging</div>
+        <ul>
+          <li><strong>Zero Trust architecture</strong> + 24/7 AI-driven SOC (aligned with NIST SP 800-207).</li>
+          <li>Enterprise encryption and data governance per <strong>MAS TRM Guidelines</strong>.</li>
+          <li>TCFD-aligned climate scenario analysis for stranded asset exposure.</li>
+        </ul>
+      </div>
+      <div class="mit">
+        <div class="cat">Operational</div>
+        <ul>
+          <li>Multi-cloud resilience and <strong>DR drills</strong> to reduce single-vendor concentration.</li>
+          <li>Application-level circuit breakers to contain outages.</li>
+          <li>Continuous <strong>vendor security assessments</strong> aligned to ISO 27001.</li>
+        </ul>
+      </div>
+      <div class="mit">
+        <div class="cat">Financial</div>
+        <ul>
+          <li><strong>AI-driven underwriting</strong> and portfolio surveillance for SME segments.</li>
+          <li>Dynamic asset-liability matching and stress testing.</li>
+          <li>Proactive loan restructuring in rate-stressed cohorts.</li>
+        </ul>
+      </div>
+      <div class="mit">
+        <div class="cat">Strategic</div>
+        <ul>
+          <li>Expand <strong>API banking</strong> and super-app ecosystem to fend off BigTech entry.</li>
+          <li>Diversify regional operations to hedge US–China exposure.</li>
+          <li>Quarterly geopolitical scenario planning at board level.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">06 — What This Project Practiced</span>The skills the analysis actually forced me to develop.</h2>
+    <div class="skills">
+      <div class="skill">
+        <h3>Framework synthesis</h3>
+        <p>Applying ISO 31000, COSO ERM, and DBS's own RAF as a stack rather than choosing one — each doing a different job in the pipeline.</p>
+      </div>
+      <div class="skill">
+        <h3>Regulatory research</h3>
+        <p>Triangulating across MAS notices, TCFD, NIST, and PwC industry data to defend every recommendation with a citable anchor.</p>
+      </div>
+      <div class="skill">
+        <h3>Quantitative scoring</h3>
+        <p>Building a defensible likelihood × impact matrix and weighted portfolio score from qualitative disclosures.</p>
+      </div>
+      <div class="skill">
+        <h3>Information design</h3>
+        <p>Rebuilding the analysis as a heat map, KRI panel, and trend chart designed for a board-level scan, not just a report body.</p>
+      </div>
+      <div class="skill">
+        <h3>Consulting-style writing</h3>
+        <p>21-page eBook structured as executive summary → identification → dashboard → mitigation → reflection, with a print-ready dark aesthetic.</p>
+      </div>
+      <div class="skill">
+        <h3>Cross-domain thinking</h3>
+        <p>Grounding a finance topic in the technical vernacular (Zero Trust, multi-cloud DR, TCFD, MAS TRM) recruiters at global banks expect fluency in.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p style="margin:0;">DBS Bank Ltd — Individual Risk Management Assignment, FIN61904. Analysis period 2023 – Q1 2025. Sources: DBS Annual Report 2023, DBS Sustainability Report 2023, MAS Technology Risk Management Guidelines (2021), MAS Notice 655 on Cyber Hygiene (2019), NIST SP 800-207 (2020), TCFD (2021), PwC Global Compliance Survey 2025, The Straits Times (2025).</p>
+    <p style="margin:12px 0 0;">KRI values and trend data are author-estimated for illustrative analytical purposes, directionally informed by public DBS disclosures and regional benchmarks. Precise internal metrics are not publicly reported. Original design and structure by Shaun Lee Cherng.</p>
+  </footer>
+
+</div>
+
+</body></html>
